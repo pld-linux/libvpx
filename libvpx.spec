@@ -9,6 +9,10 @@ Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
 URL:		http://www.webmproject.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	doxygen
+BuildRequires:	php-pcre
+BuildRequires:	php-program
+BuildRequires:	yasm
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
