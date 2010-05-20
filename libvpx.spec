@@ -1,3 +1,4 @@
+%bcond_without	asm
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
 Version:	0.9.0
@@ -11,7 +12,7 @@ URL:		http://www.webmproject.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	doxygen
-BuildRequires:	yasm
+%{?with_asm:BuildRequires:	yasm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -42,11 +43,15 @@ install -d build
 cd build
 # not autoconf configure
 ../configure \
+%if %{with asm}
 %ifarch %{x8664}
 	--target=x86_64-linux-gcc \
 %endif
 %ifarch %{ix86}
 	--target=x86-linux-gcc \
+%endif
+%else
+	--target=generic-gnu \
 %endif
 	--enable-pic \
 	--disable-optimizations \
@@ -55,9 +60,8 @@ cd build
 	--enable-runtime-cpu-detect
 
 # Hack our optflags in.
-sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g" libs-*.mk
-sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g" examples-*.mk
-sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g" docs-*.mk
+sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g" {libs,examples,docs}-*.mk
+sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
 
 %{__make} verbose=true target=libs \
 	CC="%{__cc}"
@@ -65,7 +69,10 @@ sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g"
 %{__cc} %{rpmldflags} -fPIC -o libvpx.so.0.0.0 -shared -Wl,-soname,libvpx.so.0 vpx_codec/src/*.o vpx_mem/*.o \
 	vpx_scale/generic/*.o vp8/common/*.o vp8/common/generic/*.o vp8/*.o vp8/encoder/*.o \
 	vp8/encoder/generic/*.o vp8/decoder/*.o vp8/decoder/generic/*.o vpx_config.c.o \
-	vp8/common/x*/*.o vp8/encoder/x*/*.o vp8/decoder/x*/*.o vpx_ports/*.o -lm -lpthread
+%if %{with asm}
+	vp8/common/x*/*.o vp8/encoder/x*/*.o vp8/decoder/x*/*.o vpx_ports/*.o \
+%endif
+	-lm -lpthread
 
 # Temporarily dance the static libs out of the way
 mv libvpx.a libNOTvpx.a
