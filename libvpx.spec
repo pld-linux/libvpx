@@ -8,7 +8,7 @@
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
 Version:	0.9.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
@@ -111,7 +111,6 @@ install -m755 outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
 ln -s libvpx.so.0.0.0 build/libvpx.so.0.0
 ln -s libvpx.so.0.0.0 build/libvpx.so.0
 install -m755 -p build/libvpx.so* $RPM_BUILD_ROOT%{_libdir}
-ldconfig -X -n $RPM_BUILD_ROOT%{_libdir}
 
 install outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
 
