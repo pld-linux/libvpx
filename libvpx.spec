@@ -85,7 +85,7 @@ mv libNOTvpx_g.a libvpx_g.a
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 
 install -d outdir
 %{__make} -C build install \
@@ -100,7 +100,7 @@ ln -s libvpx.so.0.0.0 build/libvpx.so.0
 install -m755 -p build/libvpx.so* $RPM_BUILD_ROOT%{_libdir}
 ldconfig -X -n $RPM_BUILD_ROOT%{_libdir}
 
-install outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}
+install outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
 
 install outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
 
@@ -119,7 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libvpx*.so
-%{_includedir}/*.h
+%{_includedir}/vpx
 
 %files static
 %defattr(644,root,root,755)
