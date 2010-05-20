@@ -1,8 +1,14 @@
 %bcond_without	asm
+
+%ifarch %{x8664}
+# buggy, non PIC asm code
+%undefine with_asm
+%endif
+
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
 Version:	0.9.0
-Release:	0.1
+Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
