@@ -1,3 +1,5 @@
+#
+# Conditional build:
 %bcond_without	asm
 
 %ifarch %{x8664}
@@ -97,7 +99,6 @@ mv libNOTvpx_g.a libvpx_g.a
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 
 install -d outdir
@@ -106,15 +107,14 @@ install -d outdir
 
 mv outdir/bin/{simple_decoder,vp8_simple_decoder}
 mv outdir/bin/{twopass_encoder,vp8_twopass_encoder}
-install -m755 outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
+install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
 
 ln -s libvpx.so.0.0.0 build/libvpx.so.0.0
 ln -s libvpx.so.0.0.0 build/libvpx.so.0
-install -m755 -p build/libvpx.so* $RPM_BUILD_ROOT%{_libdir}
+install -p build/libvpx.so* $RPM_BUILD_ROOT%{_libdir}
 
-install outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
-
-install outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
+cp -a outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
+cp -a outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
