@@ -17,9 +17,11 @@ Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
 # Source0-md5:	9eb8e818d2f3263623c258fe66924082
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
+BuildRequires:	/usr/bin/php
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	doxygen
+BuildRequires:	php-pcre
 %{?with_asm:BuildRequires:	yasm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
