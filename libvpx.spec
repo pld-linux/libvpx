@@ -2,19 +2,15 @@
 # Conditional build:
 %bcond_without	asm
 
-%ifarch %{x8664}
-# buggy, non PIC asm code
-%undefine with_asm
-%endif
-
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
 Version:	0.9.0
-Release:	2
+Release:	3
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
 # Source0-md5:	9eb8e818d2f3263623c258fe66924082
+Source1:	%{name}.ver
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
 BuildRequires:	/usr/bin/php
@@ -76,13 +72,15 @@ sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
 %{__make} verbose=true target=libs \
 	CC="%{__cc}"
 
-%{__cc} %{rpmldflags} -fPIC -o libvpx.so.0.0.0 -shared -Wl,-soname,libvpx.so.0 vpx_codec/src/*.o vpx_mem/*.o \
-	vpx_scale/generic/*.o vp8/common/*.o vp8/common/generic/*.o vp8/*.o vp8/encoder/*.o \
-	vp8/encoder/generic/*.o vp8/decoder/*.o vp8/decoder/generic/*.o vpx_config.c.o \
-%if %{with asm}
-	vp8/common/x*/*.o vp8/encoder/x*/*.o vp8/decoder/x*/*.o vpx_ports/*.o \
-%endif
-	-lm -lpthread
+mkdir tmp
+cd tmp
+ar x ../libvpx_g.a
+cd ..
+%{__cc} %{rpmldflags} -fPIC -shared \
+	-Wl,--no-undefined -Wl,-soname,libvpx.so.0 -Wl,--version-script,%{SOURCE1} -Wl,-z,noexecstack \
+	-o libvpx.so.0.0.0 tmp/*.o \
+	-pthread -lm
+rm -rf tmp
 
 # Temporarily dance the static libs out of the way
 mv libvpx.a libNOTvpx.a
