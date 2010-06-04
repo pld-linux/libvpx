@@ -5,7 +5,7 @@
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
 Version:	0.9.0
-Release:	3
+Release:	4
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
@@ -17,6 +17,7 @@ BuildRequires:	/usr/bin/php
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	doxygen
+BuildRequires:	php-common >= 4:5.0.0
 BuildRequires:	php-pcre
 %{?with_asm:BuildRequires:	yasm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -109,9 +110,9 @@ mv outdir/bin/{simple_decoder,vp8_simple_decoder}
 mv outdir/bin/{twopass_encoder,vp8_twopass_encoder}
 install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
 
-ln -s libvpx.so.0.0.0 build/libvpx.so.0.0
-ln -s libvpx.so.0.0.0 build/libvpx.so.0
-install -p build/libvpx.so* $RPM_BUILD_ROOT%{_libdir}
+install -p build/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
+ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
+ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
 
 cp -a outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
 cp -a outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
@@ -125,12 +126,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/libvpx.so.*.*
+%attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libvpx.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libvpx*.so
+%attr(755,root,root) %{_libdir}/libvpx.so
 %{_includedir}/vpx
 
 %files static
