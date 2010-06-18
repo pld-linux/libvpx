@@ -4,12 +4,12 @@
 
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
-Version:	0.9.0
-Release:	4
+Version:	0.9.1
+Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	9eb8e818d2f3263623c258fe66924082
+# Source0-md5:	e1442e74d0cca228785083fa520735a2
 Source1:	%{name}.ver
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
@@ -106,15 +106,12 @@ install -d outdir
 %{__make} -C build install \
 	DIST_DIR=$(pwd)/outdir
 
-mv outdir/bin/{simple_decoder,vp8_simple_decoder}
-mv outdir/bin/{twopass_encoder,vp8_twopass_encoder}
 install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
-
 install -p build/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
 ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
 ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
 
-cp -a outdir/include/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
+cp -a outdir/include/vpx/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
 cp -a outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
 
 %clean
