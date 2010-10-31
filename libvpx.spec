@@ -4,12 +4,12 @@
 
 Summary:	VP8, a high-quality video codec
 Name:		libvpx
-Version:	0.9.2
+Version:	0.9.5
 Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	http://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-# Source0-md5:	609370925b274aeaa29e94fc34c74957
+# Source0-md5:	4bf2f2c76700202c1fe9201fcb0680e3
 Source1:	%{name}.ver
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
@@ -42,7 +42,7 @@ Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Static libvpx library.
 
 %prep
-%setup -q
+%setup -q -n %{name}-v%{version}
 %patch0 -p1
 
 %build
