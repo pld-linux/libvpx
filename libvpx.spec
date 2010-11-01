@@ -1,54 +1,68 @@
 #
 # Conditional build:
-%bcond_without	asm
-
+%bcond_without	asm	# x86 assembler
+#
 Summary:	VP8, a high-quality video codec
+Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
 Version:	0.9.5
 Release:	1
 License:	BSD
 Group:		Libraries
+#Source0-Download: http://code.google.com/p/webm/downloads/list
 Source0:	http://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
 # Source0-md5:	4bf2f2c76700202c1fe9201fcb0680e3
 Source1:	%{name}.ver
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
 BuildRequires:	/usr/bin/php
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	doxygen
 BuildRequires:	php-common >= 4:5.0.0
 BuildRequires:	php-pcre
+%ifarch %{ix86} %{x8664}
 %{?with_asm:BuildRequires:	yasm}
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 VP8, a high-quality video codec.
 
+%description -l pl.UTF-8
+VP8 - kodek obrazu wysokiej jakości.
+
 %package devel
-Summary:	Header files and develpment documentation for libvpx
+Summary:	Header files for libvpx
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libvpx
 Group:		Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
-Header files and documentation for libvpx.
+Header files for libvpx library.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki libvpx.
 
 %package static
 Summary:	Static libvpx library
+Summary(pl.UTF-8):	Statyczna biblioteka libvpx
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static libvpx library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka libvpx.
 
 %prep
 %setup -q -n %{name}-v%{version}
 %patch0 -p1
 
 %build
-install -d build
-cd build
+install -d obj
+cd obj
 # not autoconf configure
+CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 ../configure \
 %if %{with asm}
 %ifarch %{x8664}
@@ -66,8 +80,7 @@ cd build
 	--enable-postproc \
 	--enable-runtime-cpu-detect
 
-# Hack our optflags in.
-sed -i "s|\"vpx_config.h\"|\"vpx_config.h\" %{rpmcflags} %{rpmcppflags} -fPIC|g" {libs,examples,docs}-*.mk
+# disable stripping
 sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
 
 %{__make} verbose=true target=libs \
@@ -103,11 +116,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 
 install -d outdir
-%{__make} -C build install \
+%{__make} -C obj install \
 	DIST_DIR=$(pwd)/outdir
 
 install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
-install -p build/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
+install -p obj/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
 ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
 ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
 
@@ -122,7 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%doc AUTHORS CHANGELOG LICENSE PATENTS README
+%attr(755,root,root) %{_bindir}/vpxdec
+%attr(755,root,root) %{_bindir}/vpxenc
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libvpx.so.0
 
