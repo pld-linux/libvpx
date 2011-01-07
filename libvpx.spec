@@ -6,7 +6,7 @@ Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
 Version:	0.9.5
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 #Source0-Download: http://code.google.com/p/webm/downloads/list
@@ -74,7 +74,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 %else
 	--target=generic-gnu \
 %endif
-	--enable-pic \
+	--enable-shared \
 	--disable-optimizations \
 	--enable-vp8 \
 	--enable-postproc \
@@ -84,45 +84,26 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
 
 %{__make} verbose=true target=libs \
-	CC="%{__cc}"
-
-mkdir tmp
-cd tmp
-ar x ../libvpx_g.a
-cd ..
-%{__cc} %{rpmldflags} -fPIC -shared \
-	-Wl,--no-undefined -Wl,-soname,libvpx.so.0 -Wl,--version-script,%{SOURCE1} -Wl,-z,noexecstack \
-	-o libvpx.so.0.0.0 tmp/*.o \
-	-pthread -lm
-rm -rf tmp
-
-# Temporarily dance the static libs out of the way
-mv libvpx.a libNOTvpx.a
-mv libvpx_g.a libNOTvpx_g.a
-
-# We need to do this so the examples can link against it.
-ln -sf libvpx.so.0.0.0 libvpx.so
+	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags}"
 
 %{__make} verbose=true target=examples \
-	CC="%{__cc}"
+	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags}"
 %{__make} verbose=true target=docs
-
-# Put them back so the install doesn't fail
-mv libNOTvpx.a libvpx.a
-mv libNOTvpx_g.a libvpx_g.a
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 
 install -d outdir
-%{__make} -C obj install \
+%{__make} -C obj verbose=true install \
 	DIST_DIR=$(pwd)/outdir
 
 install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
 install -p obj/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
-ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
-ln -s libvpx.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
+ln -s libvpx.so.0.9.5 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
+ln -s libvpx.so.0.9.5 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
 
 cp -a outdir/include/vpx/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
 cp -a outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
