@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	asm	# x86 assembler
-#
+
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
@@ -80,10 +80,8 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 	--enable-postproc \
 	--enable-runtime-cpu-detect
 
-# disable stripping
-sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
-
 %{__make} verbose=true target=libs \
+	HAVE_GNU_STRIP=no \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}"
 
@@ -96,17 +94,11 @@ sed -i "s|STRIP=.*|STRIP=|g" {libs,examples,docs}-*.mk
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 
-install -d outdir
 %{__make} -C obj verbose=true install \
-	DIST_DIR=$(pwd)/outdir
+	LIBSUBDIR=%{_lib} \
+	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-install -p outdir/bin/* $RPM_BUILD_ROOT%{_bindir}
-install -p obj/libvpx.so.* $RPM_BUILD_ROOT%{_libdir}
-ln -s libvpx.so.0.9.5 $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0
-ln -s libvpx.so.0.9.5 $RPM_BUILD_ROOT%{_libdir}/libvpx.so
-
-cp -a outdir/include/vpx/*.h $RPM_BUILD_ROOT%{_includedir}/vpx
-cp -a outdir/lib/*.a $RPM_BUILD_ROOT%{_libdir}
+rm $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0.?
 
 %clean
 rm -rf $RPM_BUILD_ROOT
