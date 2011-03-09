@@ -5,13 +5,13 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	0.9.5
-Release:	2
+Version:	0.9.6
+Release:	1
 License:	BSD
 Group:		Libraries
 #Source0-Download: http://code.google.com/p/webm/downloads/list
 Source0:	http://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-# Source0-md5:	4bf2f2c76700202c1fe9201fcb0680e3
+# Source0-md5:	383f3f07a76099682abb43f79b692b72
 Source1:	%{name}.ver
 Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
 URL:		http://www.webmproject.org/
@@ -65,6 +65,7 @@ cd obj
 CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 ../configure \
 %if %{with asm}
+	--as=yasm \
 %ifarch %{x8664}
 	--target=x86_64-linux-gcc \
 %endif
@@ -87,7 +88,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 
 %{__make} verbose=true target=examples \
 	CC="%{__cc}" \
-	LDFLAGS="%{rpmldflags}"
+	LDFLAGS="%{rpmldflags} -L."
 %{__make} verbose=true target=docs
 
 %install
