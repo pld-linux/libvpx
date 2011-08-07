@@ -1,24 +1,23 @@
 #
 # Conditional build:
 %bcond_without	asm	# x86 assembler
-
+#
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	0.9.6
+Version:	0.9.7
 Release:	1
 License:	BSD
 Group:		Libraries
-#Source0-Download: http://code.google.com/p/webm/downloads/list
+#Source0Download: http://code.google.com/p/webm/downloads/list
 Source0:	http://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-# Source0-md5:	383f3f07a76099682abb43f79b692b72
-Source1:	%{name}.ver
-Patch0:		%{name}-0.9.0-no-explicit-dep-on-static-lib.patch
+# Source0-md5:	893d07d1bdedaac1ad2ab63d32de7d83
 URL:		http://www.webmproject.org/
 BuildRequires:	/usr/bin/php
 BuildRequires:	doxygen
 BuildRequires:	php-common >= 4:5.0.0
 BuildRequires:	php-pcre
+BuildRequires:	sed >= 4.0
 %ifarch %{ix86} %{x8664}
 %{?with_asm:BuildRequires:	yasm}
 %endif
@@ -56,7 +55,6 @@ Statyczna biblioteka libvpx.
 
 %prep
 %setup -q -n %{name}-v%{version}
-%patch0 -p1
 
 %build
 install -d obj
@@ -99,7 +97,10 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-rm $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0.?
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.0.?
+
+# adjust prefix and libdir
+sed -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -119,6 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libvpx.so
 %{_includedir}/vpx
+%{_pkgconfigdir}/vpx.pc
 
 %files static
 %defattr(644,root,root,755)
