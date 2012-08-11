@@ -23,6 +23,21 @@ BuildRequires:	sed >= 4.0
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define	generic_target	generic-gnu
+%define	vpxtarget	%{generic_target}
+%ifarch %{x8664}
+%define	vpxtarget	x86_64-linux-gcc
+%endif
+%ifarch %{ix86}
+%define	vpxtarget	x86-linux-gcc
+%endif
+%ifarch ppc
+%define	vpxtarget	ppc32-linux-gcc
+%endif
+%ifarch ppc64
+%define	vpxtarget	ppc64-linux-gcc
+%endif
+
 %description
 VP8, a high-quality video codec.
 
@@ -64,16 +79,10 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 ../configure \
 %if %{with asm}
 	--as=yasm \
-%ifarch %{x8664}
-	--target=x86_64-linux-gcc \
-%endif
-%ifarch %{ix86}
-	--target=x86-linux-gcc \
-%endif
-%else
-	--target=generic-gnu \
-%endif
+	--target=%{vpxtarget} \
+%if "%{vpxtarget}" != "%{generic_target}"
 	--enable-shared \
+%endif
 	--disable-optimizations \
 	--enable-vp8 \
 	--enable-postproc \
