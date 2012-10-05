@@ -79,6 +79,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 ../configure \
 %if %{with asm}
 	--as=yasm \
+%endif
 	--target=%{vpxtarget} \
 %if "%{vpxtarget}" != "%{generic_target}"
 	--enable-shared \
