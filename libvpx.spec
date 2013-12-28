@@ -5,13 +5,13 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.1.0
+Version:	1.2.0
 Release:	1
 License:	BSD
 Group:		Libraries
 # Source0Download: http://code.google.com/p/webm/downloads/list
 Source0:	https://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-# Source0-md5:	7ae163ac3196c79ec2f0904280078a45
+# Source0-md5:	f8de058e6ba14555144583a2d031fe19
 URL:		http://www.webmproject.org/
 BuildRequires:	/usr/bin/php
 BuildRequires:	doxygen
@@ -109,7 +109,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.1.1
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.1.2
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
