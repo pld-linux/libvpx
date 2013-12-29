@@ -11,7 +11,9 @@ License:	BSD
 Group:		Libraries
 #Source0Download: http://code.google.com/p/webm/downloads/list
 #Source0:	https://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-Source0:	https://chromium.googlesource.com/webm/libvpx/+archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
+# source, but regenerated on each fetch
+#Source0:	https://chromium.googlesource.com/webm/libvpx/+archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	dcf436a5dc8b56bdfb4aec63b2fe6729
 URL:		http://www.webmproject.org/
 BuildRequires:	/usr/bin/php
