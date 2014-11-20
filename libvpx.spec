@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	asm	# x86 assembler
+%bcond_without	doc	# don't build doc
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
 
 %if "%{pld_release}" == "ac"
@@ -22,13 +23,15 @@ Group:		Libraries
 Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	dcf436a5dc8b56bdfb4aec63b2fe6729
 URL:		http://www.webmproject.org/
-BuildRequires:	/usr/bin/php
 BuildRequires:	doxygen
-BuildRequires:	php-common >= 4:5.0.0
-BuildRequires:	php-pcre
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
 %ifarch %{ix86} %{x8664}
 %{?with_asm:BuildRequires:	yasm >= 0.8}
+%endif
+%if %{with doc}
+BuildRequires:	%{php_name}-pcre
+BuildRequires:	%{php_name}-program
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -110,7 +113,10 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 	CC="%{__cc}" \
 	LD="%{__cc}" \
 	LDFLAGS="%{rpmldflags} -L."
+
+%if %{with doc}
 %{__make} verbose=true target=docs
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
