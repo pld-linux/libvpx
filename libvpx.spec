@@ -4,6 +4,10 @@
 %bcond_without	doc	# don't build doc
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
 
+%ifnarch %{ix86} %{x8664}
+%undefine	with_asm
+%endif
+
 %if "%{pld_release}" == "ac"
 # not supported by compiler
 %undefine	with_ssse3
@@ -26,9 +30,7 @@ URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
-%ifarch %{ix86} %{x8664}
 %{?with_asm:BuildRequires:	yasm >= 0.8}
-%endif
 %if %{with doc}
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-program
