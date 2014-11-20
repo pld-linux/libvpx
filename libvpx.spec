@@ -1,6 +1,12 @@
 #
 # Conditional build:
 %bcond_without	asm	# x86 assembler
+%bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
+
+%if "%{pld_release}" == "ac"
+# not supported by compiler
+%undefine	with_ssse3
+%endif
 
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
@@ -73,7 +79,7 @@ Statyczna biblioteka libvpx.
 
 %prep
 #%setup -q -n %{name}-v%{version}
-%setup -q -c
+%setup -qc
 
 %build
 install -d obj
@@ -88,6 +94,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 %if "%{vpxtarget}" != "%{generic_target}"
 	--enable-shared \
 %endif
+	%{!?with_ssse3:--disable-ssse3} \
 	--disable-optimizations \
 	--enable-vp8 \
 	--enable-postproc \
