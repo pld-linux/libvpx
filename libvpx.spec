@@ -30,6 +30,7 @@ Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
 %{?with_tests:BuildRequires:	libstdc++-devel}
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
 %{?with_asm:BuildRequires:	yasm >= 0.8}
