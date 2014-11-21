@@ -97,9 +97,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 	--as=yasm \
 %endif
 	--target=%{vpxtarget} \
-%if "%{vpxtarget}" != "%{generic_target}"
 	--enable-shared \
-%endif
 	%{!?with_ssse3:--disable-ssse3} \
 	--disable-optimizations \
 	--%{!?with_tests:dis}%{?with_tests:en}able-unit-tests \
