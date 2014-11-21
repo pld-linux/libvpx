@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	asm	# x86 assembler
 %bcond_without	doc	# don't build doc
+%bcond_without	tests	# build without tests
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
 
 %ifnarch %{ix86} %{x8664}
@@ -101,6 +102,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 %endif
 	%{!?with_ssse3:--disable-ssse3} \
 	--disable-optimizations \
+	--%{!?with_tests:dis}%{?with_tests:en}able-unit-tests \
 	--enable-vp8 \
 	--enable-postproc \
 	--enable-runtime-cpu-detect
@@ -136,7 +138,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %files
