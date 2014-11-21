@@ -103,6 +103,8 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 	%{!?with_ssse3:--disable-ssse3} \
 	--disable-optimizations \
 	--%{!?with_tests:dis}%{?with_tests:en}able-unit-tests \
+	--%{!?with_doc:dis}%{?with_doc:en}able-docs \
+	--%{!?with_doc:dis}%{?with_doc:en}able-install-docs \
 	--enable-vp8 \
 	--enable-postproc \
 	--enable-runtime-cpu-detect
