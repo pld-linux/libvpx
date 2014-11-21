@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	asm	# x86 assembler
 %bcond_without	doc	# don't build doc
-%bcond_without	tests	# build without tests
+%bcond_with	tests	# build tests (not useful, creates libgtest.a)
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
 
 %ifnarch %{ix86} %{x8664}
