@@ -29,6 +29,7 @@ Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	dcf436a5dc8b56bdfb4aec63b2fe6729
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
+%{?with_tests:BuildRequires:	libstdc++-devel}
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
 %{?with_asm:BuildRequires:	yasm >= 0.8}
