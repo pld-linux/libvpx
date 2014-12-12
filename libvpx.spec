@@ -4,6 +4,7 @@
 %bcond_without	doc	# don't build doc
 %bcond_with	tests	# build tests (not useful, creates libgtest.a)
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
+%bcond_without	vp9_encoder	# vp9 encoder
 
 %ifnarch %{ix86} %{x8664}
 %undefine	with_asm
@@ -12,6 +13,11 @@
 %if "%{pld_release}" == "ac"
 # not supported by compiler
 %undefine	with_ssse3
+%endif
+
+# old gcc gets stuck on ac
+%ifarch sparc
+%undefine	with_vp9_encoder
 %endif
 
 Summary:	VP8, a high-quality video codec
@@ -106,6 +112,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 	--%{!?with_doc:dis}%{?with_doc:en}able-docs \
 	--%{!?with_doc:dis}%{?with_doc:en}able-install-docs \
 	--enable-vp8 \
+	%{!?with_vp9_encoder:--disable-vp9-encoder} \
 	--enable-postproc \
 	--enable-runtime-cpu-detect
 
@@ -147,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
 %attr(755,root,root) %{_bindir}/vp8_scalable_patterns
-%attr(755,root,root) %{_bindir}/vp9_spatial_scalable_encoder
+%{?with_vp9_encoder:%attr(755,root,root) %{_bindir}/vp9_spatial_scalable_encoder}
 %attr(755,root,root) %{_bindir}/vpxdec
 %attr(755,root,root) %{_bindir}/vpxenc
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
