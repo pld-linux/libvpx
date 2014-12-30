@@ -99,11 +99,7 @@ Statyczna biblioteka libvpx.
 install -d obj
 cd obj
 # not autoconf configure
-%if %{with asm}
-CFLAGS="%{rpmcflags} %{rpmcppflags}" \
-%else
-CFLAGS="%{rpmcflags} %{rpmcppflags} -DYUV_DISABLE_ASM" \
-%endif
+CFLAGS="%{rpmcflags} %{rpmcppflags} %{!?with_asm:-DYUV_DISABLE_ASM}" \
 ../configure \
 %if %{with asm}
 	--as=yasm \
