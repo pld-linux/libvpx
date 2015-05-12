@@ -23,16 +23,14 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.3.0
-Release:	3
+Version:	1.4.0
+Release:	0.1
 License:	BSD
 Group:		Libraries
-#Source0Download: http://code.google.com/p/webm/downloads/list
-#Source0:	https://webm.googlecode.com/files/%{name}-v%{version}.tar.bz2
-# source, but regenerated on each fetch
+# Source in git web, but regenerated on each fetch, so use gentoo tarball instead
 #Source0:	https://chromium.googlesource.com/webm/libvpx/+archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
-Source0:	%{name}-%{version}.tar.gz
-# Source0-md5:	dcf436a5dc8b56bdfb4aec63b2fe6729
+Source0:	http://distfiles.gentoo.org/distfiles/%{name}-%{version}.tar.bz2
+# Source0-md5:	63b1d7f59636a42eeeee9225cc14e7de
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
 %{?with_tests:BuildRequires:	libstdc++-devel}
@@ -92,8 +90,7 @@ Static libvpx library.
 Statyczna biblioteka libvpx.
 
 %prep
-#%setup -q -n %{name}-v%{version}
-%setup -qc
+%setup -q
 
 %build
 install -d obj
@@ -139,7 +136,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.1.3
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.1.4
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
