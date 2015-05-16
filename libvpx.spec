@@ -4,7 +4,6 @@
 %bcond_without	doc	# don't build doc
 %bcond_with	tests	# build tests (not useful, creates libgtest.a)
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
-%bcond_without	vp9_encoder	# vp9 encoder
 
 %ifnarch %{ix86} %{x8664}
 %undefine	with_asm
@@ -13,11 +12,6 @@
 %if "%{pld_release}" == "ac"
 # not supported by compiler
 %undefine	with_ssse3
-%endif
-
-# old gcc gets stuck on ac
-%ifarch sparc
-%undefine	with_vp9_encoder
 %endif
 
 Summary:	VP8, a high-quality video codec
@@ -96,6 +90,8 @@ Statyczna biblioteka libvpx.
 install -d obj
 cd obj
 # not autoconf configure
+CC="%{__cc}" \
+CXX="%{__cxx}" \
 CFLAGS="%{rpmcflags} %{rpmcppflags} %{!?with_asm:-DYUV_DISABLE_ASM}" \
 ../configure \
 %if %{with asm}
@@ -109,19 +105,15 @@ CFLAGS="%{rpmcflags} %{rpmcppflags} %{!?with_asm:-DYUV_DISABLE_ASM}" \
 	--%{!?with_doc:dis}%{?with_doc:en}able-docs \
 	--%{!?with_doc:dis}%{?with_doc:en}able-install-docs \
 	--enable-vp8 \
-	%{!?with_vp9_encoder:--disable-vp9-encoder} \
+	--enable-vp8 \
 	--enable-postproc \
 	--enable-runtime-cpu-detect
 
 %{__make} verbose=true target=libs \
 	HAVE_GNU_STRIP=no \
-	CC="%{__cc}" \
-	LD="%{__cc}" \
 	LDFLAGS="%{rpmldflags}"
 
 %{__make} verbose=true target=examples \
-	CC="%{__cc}" \
-	LD="%{__cc}" \
 	LDFLAGS="%{rpmldflags} -L."
 
 %if %{with doc}
@@ -136,7 +128,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.1.4
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.2.0
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
@@ -150,12 +142,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
-%attr(755,root,root) %{_bindir}/vp8_scalable_patterns
-%{?with_vp9_encoder:%attr(755,root,root) %{_bindir}/vp9_spatial_scalable_encoder}
 %attr(755,root,root) %{_bindir}/vpxdec
 %attr(755,root,root) %{_bindir}/vpxenc
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libvpx.so.1
+%attr(755,root,root) %ghost %{_libdir}/libvpx.so.2
 
 %files devel
 %defattr(644,root,root,755)
