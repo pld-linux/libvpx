@@ -18,7 +18,7 @@ Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
 Version:	1.4.0
-Release:	0.1
+Release:	1
 License:	BSD
 Group:		Libraries
 # Source in git web, but regenerated on each fetch, so use gentoo tarball instead
