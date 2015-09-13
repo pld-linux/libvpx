@@ -5,7 +5,7 @@
 %bcond_with	tests	# build tests (not useful, creates libgtest.a)
 %bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
 
-%ifnarch %{ix86} %{x8664}
+%ifnarch %{ix86} %{x8664} x32
 %undefine	with_asm
 %endif
 
@@ -18,7 +18,7 @@ Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
 Version:	1.4.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 # Source in git web, but regenerated on each fetch, so use gentoo tarball instead
