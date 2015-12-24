@@ -21,6 +21,7 @@ Version:	1.5.0
 Release:	1
 License:	BSD
 Group:		Libraries
+#Source0Download: http://downloads.webmproject.org/releases/webm/index.html
 Source0:	https://storage.googleapis.com/downloads.webmproject.org/releases/webm/%{name}-%{version}.tar.bz2
 # Source0-md5:	49e59dd184caa255886683facea56fca
 URL:		http://www.webmproject.org/
