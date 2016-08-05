@@ -82,6 +82,18 @@ Static libvpx library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libvpx.
 
+%package tools
+Summary:	VPX decoding/encoding tools
+Summary(pl.UTF-8):	Narzędzia do kodowania/dekodowania formatu VPX
+Group:		Applications/Graphics
+Requires:	%{name} = %{version}-%{release}
+
+%description tools
+VPX decoding/encoding tools.
+
+%description tools -l pl.UTF-8
+Narzędzia do kodowania/dekodowania formatu VPX.
+
 %prep
 %setup -q
 
@@ -141,8 +153,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
-%attr(755,root,root) %{_bindir}/vpxdec
-%attr(755,root,root) %{_bindir}/vpxenc
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libvpx.so.4
 
@@ -155,3 +165,8 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libvpx.a
+
+%files tools
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/vpxdec
+%attr(755,root,root) %{_bindir}/vpxenc
