@@ -22,9 +22,7 @@ Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: http://downloads.webmproject.org/releases/webm/index.html
-#Source0:	https://chromium.googlesource.com/webm/libvpx/+archive/v%{version}.tar.gz?fakename=/%{name}-%{version}.tar.gz
-# ...but it recreates tarball each time, so use dropin
-Source0:	%{name}-%{version}.tar.gz
+Source0:	https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
 # Source0-md5:	df97945958d8514ba9fc6ca5ca39ae6a
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
@@ -97,7 +95,7 @@ VPX decoding/encoding tools.
 Narzędzia do kodowania/dekodowania formatu VPX.
 
 %prep
-%setup -q -c
+%setup -q
 
 %build
 install -d obj
