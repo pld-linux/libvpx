@@ -17,13 +17,13 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.7.0
+Version:	1.8.0
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: http://downloads.webmproject.org/releases/webm/index.html
 Source0:	https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
-# Source0-md5:	df97945958d8514ba9fc6ca5ca39ae6a
+# Source0-md5:	49cb591325f44a3459b040112e3b82e7
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
 %{?with_tests:BuildRequires:	libstdc++-devel}
@@ -139,7 +139,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.5.0
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.6.0
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
@@ -154,7 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libvpx.so.5
+%attr(755,root,root) %ghost %{_libdir}/libvpx.so.6
 
 %files devel
 %defattr(644,root,root,755)
