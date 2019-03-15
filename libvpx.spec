@@ -21,8 +21,10 @@ Version:	1.8.0
 Release:	1
 License:	BSD
 Group:		Libraries
-#Source0Download: http://downloads.webmproject.org/releases/webm/index.html
-Source0:	https://github.com/webmproject/libvpx/archive/v%{version}.tar.gz?/%{name}-%{version}.tar.gz
+# original download URL: http://downloads.webmproject.org/releases/webm/index.html
+# ...but use github mirror to get consistent tarballs
+#Source0Download: https://github.com/webmproject/libvpx/releases
+Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	49cb591325f44a3459b040112e3b82e7
 URL:		http://www.webmproject.org/
 BuildRequires:	doxygen
