@@ -141,6 +141,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	LIBSUBDIR=%{_lib} \
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
+# redundant minor version symlink (not SONAME)
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.6.1
 
 # adjust prefix and libdir
