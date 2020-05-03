@@ -53,6 +53,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %ifarch ppc64
 %define	vpxtarget	ppc64-linux-gcc
 %endif
+%ifarch aarch64
+%define	vpxtarget	arm64-linux-gcc
+%endif
 
 %description
 VP8, a high-quality video codec.
