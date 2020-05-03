@@ -108,7 +108,7 @@ cd obj
 # not autoconf configure
 CC="%{__cc}" \
 CXX="%{__cxx}" \
-CFLAGS="%{rpmcflags} %{rpmcppflags} %{!?with_asm:-DYUV_DISABLE_ASM}" \
+CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 ../configure \
 %if %{with asm}
 	--as=yasm \
