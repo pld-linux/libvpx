@@ -33,10 +33,6 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
 %{?with_asm:BuildRequires:	yasm >= 0.8}
-%if %{with doc}
-BuildRequires:	%{php_name}-pcre
-BuildRequires:	%{php_name}-program
-%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define	generic_target	generic-gnu
