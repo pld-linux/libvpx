@@ -17,7 +17,7 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.13.0
+Version:	1.13.1
 Release:	1
 License:	BSD
 Group:		Libraries
@@ -25,7 +25,7 @@ Group:		Libraries
 # ...but use github mirror to get consistent tarballs
 #Source0Download: https://github.com/webmproject/libvpx/tags
 Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	d5fd45a806a65a57d6635f9e7a98a1b2
+# Source0-md5:	d2c9de1c247f18a204e75ecefa7a2217
 URL:		https://www.webmproject.org/
 BuildRequires:	doxygen
 BuildRequires:	libstdc++-devel
