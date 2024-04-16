@@ -29,6 +29,7 @@ Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{ver
 URL:		https://www.webmproject.org/
 BuildRequires:	doxygen
 BuildRequires:	libstdc++-devel
+BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	sed >= 4.0
