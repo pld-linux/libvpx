@@ -1,9 +1,10 @@
 #
 # Conditional build:
-%bcond_without	asm	# x86 assembler
-%bcond_without	doc	# don't build doc
-%bcond_with	tests	# build tests (not useful, creates libgtest.a)
-%bcond_without	ssse3	# use SSSE3 instructions (Intel since Core2, Via Nano)
+%bcond_without	asm		# x86 assembler
+%bcond_without	doc		# don't build doc
+%bcond_with	tests		# build tests (not useful, creates libgtest.a)
+%bcond_without	ssse3		# use SSSE3 instructions (Intel since Core2, Via Nano)
+%bcond_without	static_libs	# static library
 
 %ifnarch %{ix86} %{x8664} x32
 %undefine	with_asm
@@ -115,6 +116,7 @@ CFLAGS="%{rpmcflags} %{rpmcppflags}" \
 %endif
 	--target=%{vpxtarget} \
 	--enable-shared \
+	%{!?with_static_libs:--disable-static} \
 	%{!?with_ssse3:--disable-ssse3} \
 	--disable-optimizations \
 	--%{!?with_tests:dis}%{?with_tests:en}able-unit-tests \
@@ -168,9 +170,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/vpx
 %{_pkgconfigdir}/vpx.pc
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libvpx.a
+%endif
 
 %files tools
 %defattr(644,root,root,755)
