@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	asm		# x86 assembler
-%bcond_without	doc		# don't build doc
+%bcond_without	doc		# documentation
 %bcond_with	tests		# build tests (not useful, creates libgtest.a)
 %bcond_without	ssse3		# use SSSE3 instructions (Intel since Core2, Via Nano)
 %bcond_without	static_libs	# static library
@@ -18,15 +18,15 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.14.1
+Version:	1.15.0
 Release:	1
 License:	BSD
 Group:		Libraries
-# original download URL: http://downloads.webmproject.org/releases/webm/index.html
+# original (outdated now) download URL: http://downloads.webmproject.org/releases/webm/index.html
 # ...but use github mirror to get consistent tarballs
 #Source0Download: https://github.com/webmproject/libvpx/tags
 Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	1d2a1c594587ee1f26a4f017becddcd5
+# Source0-md5:	6d2b7b8e1c06f4b10ae63ca22491f8a4
 URL:		https://www.webmproject.org/
 BuildRequires:	doxygen
 BuildRequires:	libstdc++-devel
@@ -147,7 +147,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
 # redundant minor version symlink (not SONAME)
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.9.0
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.9.1
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
