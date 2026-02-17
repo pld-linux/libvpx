@@ -18,7 +18,7 @@
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.15.2
+Version:	1.16.0
 Release:	1
 License:	BSD
 Group:		Libraries
@@ -26,10 +26,10 @@ Group:		Libraries
 # ...but use github mirror to get consistent tarballs
 #Source0Download: https://github.com/webmproject/libvpx/tags
 Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	4c7a93808c12b359733430c8377b7fcf
+# Source0-md5:	fb51551487ecfdec93f3d243b7fb1a67
 URL:		https://www.webmproject.org/
 BuildRequires:	doxygen
-BuildRequires:	libstdc++-devel
+BuildRequires:	libstdc++-devel >= 6:8
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
@@ -147,7 +147,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
 # redundant minor version symlink (not SONAME)
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.11.0
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.12.0
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
@@ -162,7 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
 %attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libvpx.so.11
+%attr(755,root,root) %ghost %{_libdir}/libvpx.so.12
 
 %files devel
 %defattr(644,root,root,755)
