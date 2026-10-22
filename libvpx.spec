@@ -10,15 +10,10 @@
 %undefine	with_asm
 %endif
 
-%if "%{pld_release}" == "ac"
-# not supported by compiler
-%undefine	with_ssse3
-%endif
-
 Summary:	VP8, a high-quality video codec
 Summary(pl.UTF-8):	VP8 - kodek obrazu wysokiej jakości
 Name:		libvpx
-Version:	1.16.0
+Version:	1.17.0
 Release:	1
 License:	BSD
 Group:		Libraries
@@ -26,9 +21,10 @@ Group:		Libraries
 # ...but use github mirror to get consistent tarballs
 #Source0Download: https://github.com/webmproject/libvpx/tags
 Source0:	https://github.com/webmproject/libvpx/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	fb51551487ecfdec93f3d243b7fb1a67
+# Source0-md5:	3c8c94e2061ad5c4c92cb319905a7e79
 URL:		https://www.webmproject.org/
 BuildRequires:	doxygen
+BuildRequires:	gcc >= 6:4.7
 BuildRequires:	libstdc++-devel >= 6:8
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
@@ -68,7 +64,7 @@ VP8 - kodek obrazu wysokiej jakości.
 Summary:	Header files for libvpx
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libvpx
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 Header files for libvpx library.
@@ -80,7 +76,7 @@ Pliki nagłówkowe biblioteki libvpx.
 Summary:	Static libvpx library
 Summary(pl.UTF-8):	Statyczna biblioteka libvpx
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 
 %description static
 Static libvpx library.
@@ -92,7 +88,7 @@ Statyczna biblioteka libvpx.
 Summary:	VPX decoding/encoding tools
 Summary(pl.UTF-8):	Narzędzia do kodowania/dekodowania formatu VPX
 Group:		Applications/Graphics
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 
 %description tools
 VPX decoding/encoding tools.
@@ -147,7 +143,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/vpx,%{_libdir}}
 	DIST_DIR=$RPM_BUILD_ROOT%{_prefix}
 
 # redundant minor version symlink (not SONAME)
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.12.0
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libvpx.so.12.1
 
 # adjust prefix and libdir
 %{__sed} -i -e 's,^prefix=.*,prefix=%{_prefix},;s,^libdir=.*,libdir=%{_libdir},' $RPM_BUILD_ROOT%{_pkgconfigdir}/vpx.pc
@@ -161,12 +157,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS CHANGELOG LICENSE PATENTS README
-%attr(755,root,root) %{_libdir}/libvpx.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libvpx.so.12
+%{_libdir}/libvpx.so.*.*.*
+%ghost %{_libdir}/libvpx.so.12
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libvpx.so
+%{_libdir}/libvpx.so
 %{_includedir}/vpx
 %{_pkgconfigdir}/vpx.pc
 
